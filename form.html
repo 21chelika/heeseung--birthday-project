@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Heeseung Celebration</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    body {
+      font-family: 'Press Start 2P', cursive;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    /* === Pixel Background sama kaya page utama === */
+    .sky {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, #a581deff 10%, #BFA0F0 10%,  #F3BFE6 15%, #9EE8FF 25%, #F3BFE6 15%,  #b5dfecff 20%);
+      z-index: -3;
+    }
+
+    .stars {
+      position: fixed;
+      width: 200%;
+      height: 200%;
+      background: url('stars.png') repeat;
+      background-size: 50px 50px;
+      animation: moveStars 60s linear infinite;
+      z-index: -2;
+      opacity: 0.2;
+    }
+    @keyframes moveStars {
+      from { transform: translate(0,0); }
+      to { transform: translate(-200px,-200px); }
+    }
+
+    .city {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: 150px;
+      background: url('city_pixel.png') repeat-x;
+      background-size: contain;
+      animation: moveCity 20s linear infinite;
+      z-index: -1;
+    }
+    @keyframes moveCity {
+      from { background-position: 0 0; }
+      to { background-position: -500px 0; }
+    }
+
+    /* Title */
+    h1 {
+      font-size: 20px;
+      color: #fff;
+      margin-top: 80px;
+      line-height: 1.6;
+      text-shadow: 
+        -2px -2px 0 #001f4d,
+         2px -2px 0 #001f4d,
+        -2px  2px 0 #001f4d,
+         2px  2px 0 #001f4d;
+      animation: floatTitle 3s ease-in-out infinite;
+    }
+    @keyframes floatTitle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .emoji {
+      font-size: 40px;
+      margin: 20px 0;
+    }
+
+    /* Barcode box */
+    .barcode-box {
+      display: inline-block;
+      background: rgba(0,0,0,0.7);
+      border: 3px solid #fffa65;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+    }
+    .barcode-box img {
+      width: 180px;
+      height: 180px;
+      image-rendering: pixelated;
+    }
+    .barcode-frame {
+      border: 4px dashed #ff6ee7;
+      padding: 10px;
+      border-radius: 15px;
+      display: inline-block;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .thanks {
+      margin-top: 25px;
+      font-size: 14px;
+      color: #fffa65;
+      text-shadow: 1px 1px 0 #001f4d;
+    }
+  </style>
+</head>
+<body>
+  <div class="sky"></div>
+  <div class="stars"></div>
+  <div class="city"></div>
+
+  <div class="emoji">🎮✨💜</div>
+
+  <h1>
+    Sorry, the main page can’t be accessed yet 💫<br>
+  But congrats 🎉 you’ve made it this far!<br>
+  If you’d like to join and share a<br>
+  sweet birthday message 🎂💜<br>
+  please scan this barcode below 👇
+  </h1>
+
+  <div class="barcode-box">
+    <div class="barcode-frame">
+      <!-- Ganti src ke QR code/barcode kamu -->
+      <img src="barcode.png" alt="QR Code">
+    </div>
+  </div>
+
+  <p class="thanks">Thank you for being part of this celebration 💜✨</p>
+</body>
+</html>
