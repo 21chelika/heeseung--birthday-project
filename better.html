@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Better Experience</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: url("bg.png"); /* ganti dengan background kamu */
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+      font-family: 'Press Start 2P', cursive;
+    }
+
+    h1 {
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 40px;
+      background: rgba(0,0,0,0.4);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+    }
+
+    .device-container {
+      display: flex;
+      gap: 50px; /* jarak antara hp dan laptop */
+      animation: tilt 3s ease-in-out forwards;
+    }
+
+    .device {
+      width: 120px;
+      height: 200px;
+      border: 4px solid white;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.1);
+      transform-origin: center;
+    }
+
+    .laptop {
+      width: 220px;
+      height: 140px;
+      border-radius: 10px;
+    }
+
+    /* Animasi miring */
+    @keyframes tilt {
+      0% { transform: rotate(0deg); opacity: 0; }
+      30% { opacity: 1; }
+      50% { transform: rotate(-10deg); }
+      100% { transform: rotate(10deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Teks instruksi -->
+  <h1>Rotate your phone 📱 or try Laptop 💻 for best play!</h1>
+
+  <!-- Device animasi -->
+  <div class="device-container">
+    <div class="device phone"></div>
+    <div class="device laptop"></div>
+  </div>
+
+  <script>
+    // Pindah otomatis ke countdown.html setelah 5 detik
+    setTimeout(() => {
+      window.location.href = "countdown.html";
+    }, 5000);
+  </script>
+</body>
+</html>
