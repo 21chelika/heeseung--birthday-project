@@ -376,11 +376,11 @@
     }
 
 
-    // === Tambahin ini untuk HP swipe ===
-    let touchStartX = 0;
-    let touchStartY = 0;
+// === Tambahin ini untuk HP swipe ===
+let touchStartX = 0;
+let touchStartY = 0;
 
-    document.addEventListener("touchstart", function(e) {
+document.addEventListener("touchstart", function(e) {
   if (e.target.closest(".message-box")) return; // biarin modal bisa klik
   touchStartX = e.changedTouches[0].screenX;
   touchStartY = e.changedTouches[0].screenY;
@@ -388,8 +388,6 @@
 
 document.addEventListener("touchend", function(e) {
   if (e.target.closest(".message-box")) return; // biarin modal bisa klik
-  let touchEndX = e.changedTouches[0].screenX;
-  let touchEndY = e.changedTouches[0].screenY;
   let touchEndX = e.changedTouches[0].screenX;
   let touchEndY = e.changedTouches[0].screenY;
 
@@ -403,8 +401,8 @@ document.addEventListener("touchend", function(e) {
     if (dy > 30) move(3);       // bawah
     else if (dy < -30) move(1); // atas
   }
-  e.preventDefault();
-}, { passive: false });
+}, { passive: true });
+
 
 
 
@@ -484,6 +482,7 @@ document.addEventListener("touchend", function(e) {
   </script>
 </body>
 </html>
+
 
 
 
