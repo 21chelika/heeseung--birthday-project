@@ -381,12 +381,15 @@
     let touchStartY = 0;
 
     document.addEventListener("touchstart", function(e) {
+  if (e.target.closest(".message-box")) return; // biarin modal bisa klik
   touchStartX = e.changedTouches[0].screenX;
   touchStartY = e.changedTouches[0].screenY;
-  e.preventDefault();
-}, { passive: false });
+}, { passive: true });
 
 document.addEventListener("touchend", function(e) {
+  if (e.target.closest(".message-box")) return; // biarin modal bisa klik
+  let touchEndX = e.changedTouches[0].screenX;
+  let touchEndY = e.changedTouches[0].screenY;
   let touchEndX = e.changedTouches[0].screenX;
   let touchEndY = e.changedTouches[0].screenY;
 
@@ -481,6 +484,7 @@ document.addEventListener("touchend", function(e) {
   </script>
 </body>
 </html>
+
 
 
 
