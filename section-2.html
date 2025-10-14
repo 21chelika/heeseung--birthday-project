@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Heeseung Pixel Scrapbook</title>
+
+  <!-- Pixel font -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --accent-1:#638ECB;
+      --accent-2:#395886;
+      --paper:#fffefc;
+      --dark:#111827;
+      --shadow: rgba(0,0,0,0.25);
+      --page-w: min(1000px, 86vw);
+      --page-h: min(640px, 70vh);
+      --ui-radius:10px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Press Start 2P', cursive;
+      background: linear-gradient(135deg,#F0F3FA,#D5DEEF,#B1C9EF,#8AAEE0,#638ECB,#395886);
+      background-size:400% 400%;
+      animation:gradientBG 14s ease infinite;
+      color:#111;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:22px;
+    }
+
+    @keyframes gradientBG{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+
+    /* Main container */
+    .scrapbook{
+      width:calc(var(--page-w) + 160px);
+      display:flex;
+      gap:20px;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      user-select:none;
+      max-width:calc(100% - 40px);
+    }
+
+    /* Page wrap (looks like a framed page) */
+    .page-wrap{
+      width:var(--page-w);
+      height:var(--page-h);
+      background:linear-gradient(180deg, rgba(17,24,39,0.95) 0%, rgba(15,23,42,0.95) 100%);
+      padding:18px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+      position:relative;
+      overflow:hidden;
+      border-radius:calc(var(--ui-radius) + 6px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    /* Paper (inner) */
+    .paper{
+      width:calc(100% - 46px);
+      height:calc(100% - 46px);
+      background:linear-gradient(180deg,#fffefc,#fbfbfb);
+      border-radius:8px;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      padding:18px;
+      box-shadow:0 8px 18px rgba(0,0,0,0.12) inset;
+    }
+
+    /* Content - will be swapped by JS */
+    .content{
+      width:100%;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+
+    .card{
+      width:100%;
+      height:100%;
+      border-radius:8px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      gap:14px;
+    }
+
+    .card .imgwrap{
+      width:100%;
+      aspect-ratio: 16 / 9;
+      background:#eee;
+      border-radius:8px;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .card img{
+      width:100%;
+      height:100%;
+      object-fit: contain;
+      background-color: #f7f7f7;
+      object-position:center;
+      display:block;
+      image-rendering:auto;
+    }
+
+    .caption{
+      height:64px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:0 12px;
+      color:#111;
+      font-size:12px;
+      line-height:1.4;
+    }
+
+    /* Navigation column */
+    .nav{
+      width:120px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .arrow{
+      width:64px;height:64px;border-radius:12px;
+      background:linear-gradient(180deg,#fff,#f0f0f0);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 8px 20px rgba(0,0,0,0.18);
+      cursor:pointer;border:4px solid #111;
+      transition:transform .18s ease, box-shadow .18s ease;
+      user-select:none;
+    }
+    .arrow:hover{transform:translateY(-4px); box-shadow:0 18px 40px rgba(0,0,0,0.25)}
+    .arrow svg{width:26px;height:26px;fill:var(--accent-2)}
+
+    .mute{
+  margin-top:6px;
+  padding:14px 20px;      /* lebih besar dari sebelumnya */
+  border-radius:10px;
+  background:rgba(255,255,255,0.92);
+  color:#111;
+  border:3px solid var(--accent-2);
+  cursor:pointer;
+  font-size:14px;         /* font lebih besar */
+  font-family:inherit;
+  box-shadow:0 8px 24px rgba(0,0,0,0.18);
+  transform: scale(1.1);  /* sedikit diperbesar */
+  transition: transform 0.2s ease;
+}
+.mute:hover{
+  transform: scale(1.2);  /* efek hover biar makin hidup */
+}
+
+
+    /* dots */
+    .dots{
+      position:absolute;
+      bottom:5%;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      gap: 8px;
+      justify-content: center;
+      align-items: center;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background:rgba(0,0,0,0.12); border:2px solid rgba(255,255,255,0.6);
+      cursor:pointer; transition:transform .18s;
+    }
+    .dot.active{background:var(--accent-1); transform:scale(1.25)}
+
+.pixel {
+  position: absolute;
+  width: 48px;
+  image-rendering: pixelated;
+  filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.2));
+  animation: float ease-in-out infinite;
+  opacity: 0.9;
+  z-index: 1; /* <— TURUNIN z-index biar di belakang kotak */
+}
+.page-wrap {
+  position: relative;
+  z-index: 3; /* biar kotaknya di depan */
+}
+
+
+@keyframes float {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(3deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+
+    /* slide/flip-like animations (enter/leave) */
+    .anim{ width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; }
+    .anim-slide-right-enter{ transform: perspective(800px) rotateY(-24deg) translateX(-30px); opacity:0; }
+    .anim-slide-right-enter.anim-active{ transform: perspective(800px) rotateY(0deg) translateX(0); opacity:1; transition: all 420ms cubic-bezier(.2,.9,.2,1); }
+    .anim-slide-right-leave{ transform: perspective(800px) rotateY(0deg) translateX(0); opacity:1; }
+    .anim-slide-right-leave.anim-active{ transform: perspective(800px) rotateY(24deg) translateX(30px); opacity:0; transition: all 420ms cubic-bezier(.2,.9,.2,1); }
+
+    .anim-slide-left-enter{ transform: perspective(800px) rotateY(24deg) translateX(30px); opacity:0; }
+    .anim-slide-left-enter.anim-active{ transform: perspective(800px) rotateY(0deg) translateX(0); opacity:1; transition: all 420ms cubic-bezier(.2,.9,.2,1); }
+    .anim-slide-left-leave{ transform: perspective(800px) rotateY(0deg) translateX(0); opacity:1; }
+    .anim-slide-left-leave.anim-active{ transform: perspective(800px) rotateY(-24deg) translateX(-30px); opacity:0; transition: all 420ms cubic-bezier(.2,.9,.2,1); }
+
+    /* small screens adjustments */
+    @media (max-width:1100px){
+      .scrapbook{width:95%}
+      .nav{display:none}
+      .page-wrap{ width:96vw; height:78vh; }
+    }
+    @media (max-width:640px){
+      .page-wrap{ padding:10px;height:78vh }
+      .page-wrap .paper{ padding:10px }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scrapbook" id="scrapbook">
+    <div class="page-wrap" role="main" aria-label="Scrapbook page">
+      <div class="paper">
+        <div class="content" id="contentArea">
+          <!-- JS will inject content here -->
+        </div>
+      </div>
+    </div>
+
+    <div class="nav" aria-hidden="false">
+      <div class="arrow" id="prevBtn" title="Previous (←)">
+        <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </div>
+
+      <button class="mute" id="muteBtn" title="Toggle music">Play</button>
+
+      <div class="arrow" id="nextBtn" title="Next (→)">
+        <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+      </div>
+    </div>
+
+    <div class="dots" id="dots" aria-hidden="false"></div>
+
+  <!-- background music (replace path) -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="ENHYPEN (엔하이픈) 'Highway 1009' Official Audio.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+<script>
+/*
+  Heeseung Pixel Scrapbook — final combined version
+  - 25 pages by default (images expected at assets/page01.jpg ... page25.jpg)
+  - Replace asset paths (pages[i].img) to your real image files if needed
+  - Floating pixel icons should be placed in assets/ (coin.png, basket.png, heart.png, star.png, music.png)
+*/
+
+const pages = [
+  { img: 'assets/1.png', caption: 'Welcome — Heeseung Birthday Interactive Page' },
+  { img: 'assets/2.gif', caption: 'Journey with Lee Heeseung' },
+  { img: 'assets/3.png', caption: 'Baby days — The beginning' },
+  { img: 'assets/4.png', caption: 'Pre-debut memories' },
+  { img: 'assets/5.png', caption: 'Debut — the first stage' },
+  { img: 'assets/6.png', caption: 'Heeseung now more shining' },
+  { img: 'assets/7.gif', caption: 'Artistry of Heeseung' },
+  { img: 'assets/8.png', caption: 'Heeseung Cover Songs — Off My Face by Justin Bieber' },
+  { img: 'assets/9.png', caption: 'Heeseung Cover Songs — This is what falling in love feels like by Jvke' },
+  { img: 'assets/10.png', caption: 'Heeseung Vocal Director — Bite Me' },
+  { img: 'assets/11.png', caption: 'Prod by Heeseung — Highway 1009' },
+  { img: 'assets/12.png', caption: 'Dial Tragedy — Evxn' },
+  { img: 'assets/13.png', caption: 'Confession — Flo Rida, Paul Russell (with Heeseung and Jake)' },
+  { img: 'assets/14.gif', caption: 'Spotlight Moments' },
+  { img: 'assets/15.png', caption: 'Li Xicheng Challenge' },
+  { img: 'assets/16.png', caption: 'The red hair guy from ENHYPEN' },
+  { img: 'assets/17.gif', caption: 'Favorite Moments & What We Admire' },
+  { img: 'assets/18.png', caption: 'Favorite Moments (1)' },
+  { img: 'assets/19.png', caption: 'Favorite Moments (2)' },
+  { img: 'assets/20.png', caption: 'Favorite Moments (3)' },
+  { img: 'assets/21.gif', caption: 'Words from the Heart for Heeseung' },
+  { img: 'assets/22.png', caption: 'from: wawa' },
+  { img: 'assets/23.png', caption: 'from: syahla' },
+  { img: 'assets/24.png', caption: 'from: lia' },
+  { img: 'assets/25.png', caption: 'from: tano' },
+  { img: 'assets/26.png', caption: 'from: odi' },
+  { img: 'assets/27.png', caption: 'from: pitriyani' },
+  { img: 'assets/28.png', caption: 'from: dea' },
+  { img: 'assets/29.png', caption: 'from: fia' },
+  { img: 'assets/30.png', caption: 'from: ara' },
+  { img: 'assets/31.png', caption: 'from: shuraaablue' },
+  { img: 'assets/32.png', caption: 'from: vynn' },
+  { img: 'assets/33.png', caption: 'from: aruni' },
+  { img: 'assets/34.png', caption: 'from: anonim' },
+  { img: 'assets/35.png', caption: 'from: ryll' },
+  { img: 'assets/36.png', caption: 'from: heejimsun' },
+  { img: 'assets/37.png', caption: 'from: sabiyu' },
+  { img: 'assets/38.png', caption: 'from: pinkeu' },
+  { img: 'assets/39.png', caption: 'from: rara' },
+  { img: 'assets/40.png', caption: 'from: chelsea cher' },
+  { img: 'assets/41.png', caption: 'from: pau' },
+  { img: 'assets/42.png', caption: 'from: dini feb' },
+  { img: 'assets/43.png', caption: 'from: Naila Lee' },
+  { img: 'assets/44.png', caption: 'from: mochiyass' },
+  { img: 'assets/45.png', caption: 'from: ayuuj' },
+  { img: 'assets/46.png', caption: 'from: the project intiator (chelricia)' },
+  { img: 'assets/47.png', caption: 'Thank you — messages' },
+];
+
+// DOM refs
+const contentArea = document.getElementById('contentArea');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const dotsWrap = document.getElementById('dots');
+const bgMusic = document.getElementById('bgMusic');
+const muteBtn = document.getElementById('muteBtn');
+
+let current = 0;
+let isAnimating = false;
+
+// build dots
+pages.forEach((p, idx) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (idx === 0 ? ' active' : '');
+  d.dataset.index = idx;
+  d.addEventListener('click', () => goTo(parseInt(idx)));
+  dotsWrap.appendChild(d);
+});
+
+// render page with direction-aware animation
+function renderPage(idx, direction = 'right') {
+  if (isAnimating) return;
+  isAnimating = true;
+
+  const wrapper = document.createElement('div');
+  wrapper.style.width = '100%';
+  wrapper.style.height = '100%';
+
+  const enterClass = direction === 'right' ? 'anim-slide-right-enter' : 'anim-slide-left-enter';
+  const leaveClass = direction === 'right' ? 'anim-slide-right-leave' : 'anim-slide-left-leave';
+
+  wrapper.innerHTML = `
+    <div class="anim ${enterClass}">
+      <div class="card">
+        <div class="imgwrap">
+          <img src="${pages[idx].img}" alt="${pages[idx].caption}" loading="lazy"
+               onerror="this.style.opacity=.06; this.style.filter='grayscale(1)'; this.alt='(image missing)';">
+        </div>
+        <div class="caption">${pages[idx].caption}</div>
+      </div>
+    </div>
+  `;
+
+  const old = contentArea.querySelector(':scope > .anim');
+  contentArea.appendChild(wrapper);
+
+  // trigger enter animation
+  requestAnimationFrame(() => {
+    const animElem = wrapper.querySelector('.anim');
+    animElem.classList.add('anim-active');
+  });
+
+  // animate old out
+  if (old) {
+    old.classList.add(leaveClass);
+    requestAnimationFrame(() => old.classList.add('anim-active'));
+    setTimeout(() => {
+      if (old && old.parentNode) old.parentNode.removeChild(old);
+    }, 420);
+  }
+
+  // replace wrapper with its .anim child after finish
+  setTimeout(() => {
+    const animChild = wrapper.querySelector('.anim');
+    if (animChild) contentArea.replaceChild(animChild, wrapper);
+    updateDots(idx);
+    current = idx;
+    isAnimating = false;
+  }, 440);
+}
+
+function updateDots(i) {
+  Array.from(dotsWrap.children).forEach((d, idx) => {
+    d.classList.toggle('active', idx === i);
+  });
+}
+
+// navigation
+function prevPage() { if (current > 0) renderPage(current-1, 'left'); }
+function nextPage() { if (current < pages.length - 1) renderPage(current+1, 'right'); }
+function goTo(i) {
+  if (i === current) return;
+  const dir = i > current ? 'right':'left';
+  renderPage(i, dir);
+}
+
+// keyboard navigation + space toggles music
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') prevPage();
+  if (e.key === 'ArrowRight') nextPage();
+  if (e.key === ' ') { e.preventDefault(); toggleMusic(); }
+});
+
+// swipe support for mobile
+let touchStartX = null;
+let touchStartY = null;
+document.addEventListener('touchstart', (e) => {
+  const t = e.touches[0];
+  touchStartX = t.clientX; touchStartY = t.clientY;
+}, {passive:true});
+
+document.addEventListener('touchend', (e) => {
+  if (!touchStartX) return;
+  const t = e.changedTouches[0];
+  const dx = t.clientX - touchStartX;
+  const dy = t.clientY - touchStartY;
+  if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+    if (dx > 0) prevPage(); else nextPage();
+  }
+  touchStartX = null;
+});
+
+// mouse drag for desktop swipe-like feel (click+drag)
+let isDown = false;
+let startX = 0;
+document.addEventListener('mousedown', (e) => {
+  isDown = true; startX = e.clientX;
+});
+document.addEventListener('mouseup', (e) => {
+  if (!isDown) return;
+  const dx = e.clientX - startX;
+  if (Math.abs(dx) > 80) {
+    if (dx > 0) prevPage(); else nextPage();
+  }
+  isDown = false;
+});
+
+// attach buttons
+prevBtn.addEventListener('click', prevPage);
+nextBtn.addEventListener('click', nextPage);
+
+// music control (start muted until user interacts)
+let muted = true;
+function toggleMusic(){
+  if (muted){
+    bgMusic.play().catch(()=>{/* autoplay may be blocked until interaction */});
+    muted=false;
+    muteBtn.textContent='Mute';
+  } else {
+    bgMusic.pause();
+    muted=true;
+    muteBtn.textContent='Play';
+  }
+}
+muteBtn.addEventListener('click', toggleMusic);
+
+// initial render
+renderPage(0);
+
+// preload first few images
+(function preloadSome(){
+  const lim = Math.min(6, pages.length);
+  for (let i=0;i<lim;i++){
+    const img = new Image();
+    img.src = pages[i].img;
+  }
+})();
+
+</script>
+</body>
+</html>

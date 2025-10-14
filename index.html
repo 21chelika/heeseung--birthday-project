@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Better Experience</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: 'Press Start 2P', cursive;
+      background: linear-gradient(to bottom, #001122 0%, #000814 100%);
+      color: white;
+    }
+
+    /* Bintang */
+    .stars {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      box-shadow: 
+        50px 80px white, 120px 200px white, 300px 100px white, 
+        600px 150px white, 800px 220px white, 1000px 50px white,
+        200px 300px white, 400px 400px white, 700px 350px white,
+        900px 250px white;
+      animation: twinkle 2s infinite alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.3; }
+      to { opacity: 1; }
+    }
+
+    /* Awan pixel */
+    .cloud {
+      position: absolute;
+      width: 60px;
+      height: 20px;
+      background: #fff;
+      top: 80px;
+      left: 20%;
+      box-shadow: 70px 20px #fff, 140px -10px #ccc, 220px 15px #fff;
+    }
+
+    /* Lantai grid futuristik */
+    .grid {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 40%;
+      background: 
+        linear-gradient(to top, transparent 0%, #004488 100%),
+        repeating-linear-gradient(0deg, transparent 0px, transparent 18px, #00f 19px),
+        repeating-linear-gradient(90deg, transparent 0px, transparent 48px, #00f 49px);
+      transform: perspective(500px) rotateX(60deg);
+      transform-origin: bottom;
+    }
+
+    h1 {
+      font-size: 16px;
+      text-align: center;
+      margin-bottom: 40px;
+      background: rgba(0,0,0,0.4);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      z-index: 10;
+    }
+
+    .device-container {
+      display: flex;
+      gap: 50px;
+      animation: tilt 3s ease-in-out infinite alternate;
+      z-index: 10;
+    }
+
+    .device {
+      width: 120px;
+      height: 200px;
+      border: 4px solid white;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.1);
+      transform-origin: center;
+    }
+
+    .laptop {
+      width: 220px;
+      height: 140px;
+      border-radius: 10px;
+    }
+
+    /* Animasi miring */
+    @keyframes tilt {
+      0% { transform: rotate(-5deg); }
+      100% { transform: rotate(5deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background -->
+  <div class="stars"></div>
+  <div class="cloud"></div>
+  <div class="grid"></div>
+
+  <!-- Teks instruksi -->
+  <h1>Rotate your phone 📱 or try Laptop 💻 for best play!</h1>
+
+  <!-- Device animasi -->
+  <div class="device-container">
+    <div class="device phone"></div>
+    <div class="device laptop"></div>
+  </div>
+
+  <script>
+    // Pindah otomatis ke countdown.html setelah 5 detik
+    setTimeout(() => {
+      window.location.href = "countdown.html";
+    }, 5000);
+  </script>
+</body>
+</html>
